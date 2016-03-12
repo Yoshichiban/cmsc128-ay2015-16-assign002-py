@@ -1,7 +1,7 @@
 def getHammingDistance(str1, str2):
         """
-        This function gets the number of characters that differ in ith position from position 1 to strlen(str1)
-        Strings must be of the same length; never 0 or negative
+        This function gets the number of characters that differ in ith position from position 1 to strlen(str1).
+        Strings must be of the same length; never 0 or negative.
         """
         
         """
@@ -9,7 +9,7 @@ def getHammingDistance(str1, str2):
         if the length of either strings is 0 or negative, or the two strings do not have the same length, return error if not(false)
         """
         if len(str1) == 0 or len(str2) == 0:
-                return "Error! String length = 0!"
+                return "Error! String length == 0!"
         if len(str1) < 0 or len(str2) < 0:
                 return "Error! String length is negative!"        
         if len(str1) != len(str2):
@@ -34,8 +34,7 @@ def getHammingDistance(str1, str2):
 
 def countSubstrPattern(original, pattern):
         """
-        Given a string original and pattern, we will count the number of occurrence
-        of pattern in original.
+        Given the original string and a pattern, this function will count the number of occurrence of the pattern in the original/given string.
         """
         
         #initialization; count is the variable that the function will return(count of the pattern's occurence in the given string)
@@ -80,6 +79,9 @@ def isValidString(string, alphabet):
 def getSkew(string, n):
         """
         Given a genome str of some length q (where q>0), it returns the number of Gs minus the number of Cs in the first n nucleotides (q>=n). The value can be zero, negative or positive. The first position is one (1) not zero(0) as we typically associate with string implementations
+
+        *IMPORTANT*
+        The genome input in this function is assumed to be correct since there is no function to check its validity; this function, however, is included in the implementation of getMaxSkewN() and getMinSkewN()
         """
         
         #initialize skew variable; variable that the function will return; simply, G minus(-) C
@@ -91,7 +93,9 @@ def getSkew(string, n):
         if not(q > 0) :
                 return "Error! Genome(string) must be of length greater than 0!"
         if not(q >= n) :
-                return "Error! Out of bounds; first n nucleotides count input is greater than the genome length!"
+                return "Error! Out of bounds; \"first n nucleotides\" input is greater than the genome length!"
+        if n < 1:
+                return "Error! Out of bounds; \"first n nucleotides\" input must be greater than or equal to 1!"
         
         #Get # of G's and C's until the n-1th(technically and syntactically nth due to Python's implementation of the .count() function) position then computer for G minus(-) C
         G = string.count("G",0,n)
@@ -104,11 +108,22 @@ def getMaxSkewN(string, n):
         """
         Given a genome str of some length q (where q>0), it returns the maximum value of the number of Gs minus the number of Cs in the first n nucleotides (q>=n). The value can be zero, negative or positive. The first position is one (1) not zero(0) as we typically associate with string implementations.
         """
-        #initialize G, C and maxSkew
+        #initialize G, C and maxSkew and the index "i"
         G = 0
         C = 0
         maxSkew = 0
         i = 0
+        
+        #get the length of the given string
+        q = len(string)
+        
+        #check for errors
+        if not(q > 0) :
+                return "Error! Genome(string) must be of length greater than 0!"
+        if not(q >= n) :
+                return "Error! Out of bounds; \"first n nucleotides\" input is greater than the genome length!"
+        if n < 1:
+                return "Error! Out of bounds; \"first n nucleotides\" input must be greater than or equal to 1!"
         
         #loop through each and every character of the given string until the given position(n)
         #for character in string:
@@ -128,28 +143,93 @@ def getMaxSkewN(string, n):
                 if skew > maxSkew:
                         maxSkew = skew
                 i += 1
+                
         return maxSkew
+
+def getMinSkewN(string, n):
+        """
+        Given a genome str of some length q (where q>0), it returns the minimum value of the number of Gs minus the number of Cs in the first n nucleotides (q>=n). The value can be zero, negative or positive. The first position is one (1) not zero(0) as we typically associate with string implementations.
+        """
+        #initialize G, C, minSkew, skew and the index "i"
+        G = 0
+        C = 0
+        minSkew = 0
+        skew = 0
+        i = 0
+        
+        #get the length of the given string
+        q = len(string)
+        
+        #check for errors
+        if not(q > 0) :
+                return "Error! Genome(string) must be of length greater than 0!"
+        if not(q >= n) :
+                return "Error! Out of bounds; \"first n nucleotides\" input is greater than the genome length!"
+        if n < 1:
+                return "Error! Out of bounds; \"first n nucleotides\" input must be greater than or equal to 1!"
+        
+        #first iteration to set the initial value of minSkew
+        #NOTE: This "preliminary" logic is unique and is not necessary in the case of getMaxSkewN()
+        character = string[i]
+        #increment G or C, depending on which between the two characters is found
+        if character == "G":
+                G += 1
+        elif character == "C":
+                C += 1
+        #catch case for an invalid character, thus invalid genome
+        elif not(character == "A" or character == "T"):
+                return "Invalid Genome sequence!"
+        #compute the current skew value
+        skew = G-C;   
+        #set minSkew value
+        minSkew = skew
+        #increment index
+        i += 1
+        
+        #loop through each and every character after the first position of the given string until the given position(n); for all other iterations:
+        while i < n:
+                character = string[i]
+                #increment G or C, depending on which between the two characters is found
+                if character == "G":
+                        G += 1
+                elif character == "C":
+                        C += 1
+                #catch case for an invalid character, thus invalid genome
+                elif not(character == "A" or character == "T"):
+                        return "Invalid Genome sequence!"
+                #compute the current skew value
+                skew = G-C;
+
+                #if the current skew value is less than the minSkew value, replace the value of minSkew with the value of skew
+                if skew < minSkew:
+                        minSkew = skew
+                #increment index
+                i += 1
+                
+        return minSkew
 """
 -----------------------
 Main Program/Development Testing Environment
 -----------------------
 """
 
+"""
+
 #The following are test cases derived from the .pdf file of the assignment specifications
 
 OhOne = getHammingDistance("AACCTT","GGCCTT")
-print("Hamming Distance = "+str(OhOne)+"")
+print("Hamming Distance = "+str(OhOne)+"") #returns 2
 OhOne = getHammingDistance("TCGGA","AAAAG")
-print("Hamming Distance = "+str(OhOne)+"")
+print("Hamming Distance = "+str(OhOne)+"") #returns 5
 OhOne = getHammingDistance("A","AG")
-print("Hamming Distance = "+str(OhOne)+"\n\n")
+print("Hamming Distance = "+str(OhOne)+"\n\n") #returns "Error! Strings are not equal!"
 
 Ohtwo = countSubstrPattern("AATATATAGG","GG")
-print(Ohtwo)
+print(Ohtwo) #returns 1
 Ohtwo = countSubstrPattern("AATATATAGG","ATA")
-print(Ohtwo)
+print(Ohtwo) #returns 3
 Ohtwo = countSubstrPattern("AATATATAGG","ACTGACTGACTG")
-print(Ohtwo,"\n")
+print(Ohtwo,"\n") #returns 0
 
 print(isValidString("AAGGCTATGC","ACGT")) #returns true
 print(isValidString("AAGGCTATGa","ACGT")) #returns false
@@ -169,3 +249,13 @@ print(getMaxSkewN("GGCCAC", 3)) #returns 2
 print(getMaxSkewN("GGCCAC", 4)) #returns 2
 print(getMaxSkewN("GGCCAC", 5)) #returns 2
 print(getMaxSkewN("G1GCCAC", 5)) #returns "Invalid Genome sequence!"
+
+print(getMinSkewN("GGCCAC", 1)) #returns 1
+print(getMinSkewN("GGCCAC", 2)) #returns 1
+print(getMinSkewN("GGCCAC", 3)) #returns 1
+print(getMinSkewN("GGCCAC", 4)) #returns 0
+print(getMinSkewN("GGCCAC", 5)) #returns 0
+print(getMinSkewN("GGCCAC", 6)) #returns -1
+print(getMinSkewN("GGCCAC", 0)) #returns "Error! Out of bounds; "first n nucleotides" input must be greater than or equal to 1!"
+
+"""
