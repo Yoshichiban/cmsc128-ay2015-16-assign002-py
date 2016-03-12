@@ -28,14 +28,24 @@ def getHammingDistance(str1, str2):
                         print(char1+char2+" : 1=Same")
                 print(hammingDistance)
                 """
+                
         #DEBUGGING: print(hammingDistance)
         return hammingDistance
 
 def countSubstrPattern(original, pattern):
+        """
+        Given a string original and pattern, we will count the number of occurrence
+        of pattern in original.
+        """
+        
+        #initialization
         count = 0
         i = 0
         length = len(pattern)
+        
+        #loop through the whole length of the given/original string
         while i < len(original):
+                #find an occurence of the pattern in the given/original string
                 i = original.find(pattern,i)
                 #catch the case where .find() returns -1 if no match is found; break the        loop
                 if i == -1:
@@ -48,22 +58,47 @@ def countSubstrPattern(original, pattern):
                 i += 1
         return count
 
+def isValidString(string, alphabet):
+        """
+        Given an alphabet string where all letters are assumed to be unique, this
+        function returns true if the string str is a valid string based on the letters of alphabet.
+        """
+        
+        #initialize boolean value
+        boolean = True
+        
+        #loop through each character in the given string
+        for character in string:
+                #compare current character to the alphabet; if the current character is NOT IN the given alphabet, set the variable boolean to False
+                if character not in alphabet:
+                        boolean = False
+                        return boolean
+        return boolean
+        
 """
 -----------------------
 Main Program/Development Testing Environment
 -----------------------
 """
 
+#The following are test cases derived from the .pdf file of the assignment specifications
+
 OhOne = getHammingDistance("AACCTT","GGCCTT")
-print("Hamming Distance = "+str(OhOne)+"\n")
+print("Hamming Distance = "+str(OhOne)+"")
 OhOne = getHammingDistance("TCGGA","AAAAG")
-print("Hamming Distance = "+str(OhOne)+"\n")
+print("Hamming Distance = "+str(OhOne)+"")
 OhOne = getHammingDistance("A","AG")
 print("Hamming Distance = "+str(OhOne)+"\n\n")
 
 Ohtwo = countSubstrPattern("AATATATAGG","GG")
-print(Ohtwo,"\n")
+print(Ohtwo)
 Ohtwo = countSubstrPattern("AATATATAGG","ATA")
-print(Ohtwo,"\n")
+print(Ohtwo)
 Ohtwo = countSubstrPattern("AATATATAGG","ACTGACTGACTG")
-print(Ohtwo,"\n")
+print(Ohtwo)
+
+print(isValidString("AAGGCTATGC","ACGT")) #returns true
+print(isValidString("AAGGCTATGa","ACGT")) #returns false
+print(isValidString("ACGT","ACGT")) #returns true
+print(isValidString("ACGT101_","ACGT")) #returns false
+print(isValidString("091212345","0123456789")) #returns true
