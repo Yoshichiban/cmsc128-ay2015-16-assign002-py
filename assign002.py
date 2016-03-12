@@ -14,7 +14,7 @@ def getHammingDistance(str1, str2):
                 return "Error! String length is negative!"        
         if len(str1) != len(str2):
                 return "Error! Strings are not equal!"        
-        #initialize hammingDistance variable
+        #initialize hammingDistance variable; variable that the function will return
         hammingDistance = 0
         
         #for-loop to iterate and then compare the characters for each and every position
@@ -38,7 +38,7 @@ def countSubstrPattern(original, pattern):
         of pattern in original.
         """
         
-        #initialization
+        #initialization; count is the variable that the function will return(count of the pattern's occurence in the given string)
         count = 0
         i = 0
         length = len(pattern)
@@ -56,6 +56,7 @@ def countSubstrPattern(original, pattern):
                 #also increment index for the next search
                 count += 1
                 i += 1
+                
         return count
 
 def isValidString(string, alphabet):
@@ -64,7 +65,7 @@ def isValidString(string, alphabet):
         function returns true if the string str is a valid string based on the letters of alphabet.
         """
         
-        #initialize boolean value
+        #initialize boolean value; variable that the function will return; is the string valid, given the input alphabet?
         boolean = True
         
         #loop through each character in the given string
@@ -73,6 +74,7 @@ def isValidString(string, alphabet):
                 if character not in alphabet:
                         boolean = False
                         return boolean
+                
         return boolean
         
 def getSkew(string, n):
@@ -80,7 +82,7 @@ def getSkew(string, n):
         Given a genome str of some length q (where q>0), it returns the number of Gs minus the number of Cs in the first n nucleotides (q>=n). The value can be zero, negative or positive. The first position is one (1) not zero(0) as we typically associate with string implementations
         """
         
-        #initialize skew variable
+        #initialize skew variable; variable that the function will return; simply, G minus(-) C
         skew = 0;
         #get the length of the given string
         q = len(string)
@@ -98,6 +100,35 @@ def getSkew(string, n):
 
         return skew
 
+def getMaxSkewN(string, n):
+        """
+        Given a genome str of some length q (where q>0), it returns the maximum value of the number of Gs minus the number of Cs in the first n nucleotides (q>=n). The value can be zero, negative or positive. The first position is one (1) not zero(0) as we typically associate with string implementations.
+        """
+        #initialize G, C and maxSkew
+        G = 0
+        C = 0
+        maxSkew = 0
+        i = 0
+        
+        #loop through each and every character of the given string until the given position(n)
+        #for character in string:
+        while i < n:
+                character = string[i]
+                #increment G or C, depending on which between the two characters is found
+                if character == "G":
+                        G += 1
+                elif character == "C":
+                        C += 1
+                #catch case for an invalid character, thus invalid genome
+                elif not(character == "A" or character == "T"):
+                        return "Invalid Genome sequence!"
+                #compute the current skew value
+                skew = G-C;
+                #if the current skew value is greater than the maxSkew value, replace the value if maxSkew with the value of skew
+                if skew > maxSkew:
+                        maxSkew = skew
+                i += 1
+        return maxSkew
 """
 -----------------------
 Main Program/Development Testing Environment
@@ -118,16 +149,23 @@ print(Ohtwo)
 Ohtwo = countSubstrPattern("AATATATAGG","ATA")
 print(Ohtwo)
 Ohtwo = countSubstrPattern("AATATATAGG","ACTGACTGACTG")
-print(Ohtwo)
+print(Ohtwo,"\n")
 
 print(isValidString("AAGGCTATGC","ACGT")) #returns true
 print(isValidString("AAGGCTATGa","ACGT")) #returns false
 print(isValidString("ACGT","ACGT")) #returns true
 print(isValidString("ACGT101_","ACGT")) #returns false
-print(isValidString("091212345","0123456789")) #returns true
+print(isValidString("091212345","0123456789"),"\n") #returns true
 
 print(getSkew("GGCCAC", 1)) #returns 1
-#print(getSkew("GGCCAC", 2)) #returns 2
-#print(getSkew("GGCCAC", 3)) #returns 1
-#print(getSkew("GGCCAC", 4)) #returns 0
-#print(getSkew("GGCCAC", 5)) #returns 0
+print(getSkew("GGCCAC", 2)) #returns 2
+print(getSkew("GGCCAC", 3)) #returns 1
+print(getSkew("GGCCAC", 4)) #returns 0
+print(getSkew("GGCCAC", 5),"\n") #returns 0
+
+print(getMaxSkewN("GGCCAC", 1)) #returns 1
+print(getMaxSkewN("GGCCAC", 2)) #returns 2
+print(getMaxSkewN("GGCCAC", 3)) #returns 2
+print(getMaxSkewN("GGCCAC", 4)) #returns 2
+print(getMaxSkewN("GGCCAC", 5)) #returns 2
+print(getMaxSkewN("G1GCCAC", 5)) #returns "Invalid Genome sequence!"
