@@ -75,6 +75,29 @@ def isValidString(string, alphabet):
                         return boolean
         return boolean
         
+def getSkew(string, n):
+        """
+        Given a genome str of some length q (where q>0), it returns the number of Gs minus the number of Cs in the first n nucleotides (q>=n). The value can be zero, negative or positive. The first position is one (1) not zero(0) as we typically associate with string implementations
+        """
+        
+        #initialize skew variable
+        skew = 0;
+        #get the length of the given string
+        q = len(string)
+        
+        #check for errors
+        if not(q > 0) :
+                return "Error! Genome(string) must be of length greater than 0!"
+        if not(q >= n) :
+                return "Error! Out of bounds; first n nucleotides count input is greater than the genome length!"
+        
+        #Get # of G's and C's until the n-1th(technically and syntactically nth due to Python's implementation of the .count() function) position then computer for G minus(-) C
+        G = string.count("G",0,n)
+        C = string.count("C",0,n)
+        skew = G-C
+
+        return skew
+
 """
 -----------------------
 Main Program/Development Testing Environment
@@ -102,3 +125,9 @@ print(isValidString("AAGGCTATGa","ACGT")) #returns false
 print(isValidString("ACGT","ACGT")) #returns true
 print(isValidString("ACGT101_","ACGT")) #returns false
 print(isValidString("091212345","0123456789")) #returns true
+
+print(getSkew("GGCCAC", 1)) #returns 1
+#print(getSkew("GGCCAC", 2)) #returns 2
+#print(getSkew("GGCCAC", 3)) #returns 1
+#print(getSkew("GGCCAC", 4)) #returns 0
+#print(getSkew("GGCCAC", 5)) #returns 0
