@@ -1,3 +1,9 @@
+"""
+Joshua David C. Sta. Rita
+2010-42658
+CMSC128 AB-4L
+Assign 002: Programming a Simple Bioinformatics Library
+"""
 def getHammingDistance(str1, str2):
         """
         This function gets the number of characters that differ in ith position from position 1 to strlen(str1).
